@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZAYKA - Ghar Ka Khana</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif}
+body{background:#FFF1D6;padding:16px}
+.app{max-width:1150px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;background:#FFFBF0;padding:14px 22px;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,.05);margin-bottom:16px}
+.top h1{color:#C46210;font-size:32px}
+.badge{background:linear-gradient(135deg,#FF8A2B,#FF5A1F);color:white;padding:8px 18px;border-radius:30px;font-size:13px;border:none;cursor:pointer}
+.hero{display:flex;justify-content:space-between;align-items:center;margin:14px 6px;flex-wrap:wrap;gap:10px}
+.hero h2{font-size:22px;color:#431407}
+.hero p{font-size:13px;color:#9C6B4A;margin-top:4px}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:18px}
+.left{background:#FFFBF0;border-radius:24px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.06);height:fit-content;position:sticky;top:20px}
+.ing-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.ing-card{background:white;border-radius:18px;padding:12px;text-align:center;cursor:pointer;border:2px solid transparent;transition:.2s;box-shadow:0 4px 12px rgba(0,0,0,.04)}
+.ing-card.selected{border-color:#FF8A2B;background:#FFF4E5;transform:scale(1.02)}
+.ing-card div{font-size:42px}
+.ing-card p{font-size:12px;font-weight:700;color:#5D2E0F;margin-top:6px}
+.recipe{background:#FFFBF0;border-radius:24px;padding:16px;display:flex;gap:16px;box-shadow:0 8px 30px rgba(0,0,0,.06);margin-bottom:18px}
+.recipe img{width:240px;height:160px;object-fit:cover;border-radius:18px}
+.recipe h3{font-size:18px;color:#3C1A05}
+.meta{font-size:11px;background:#FFF0D5;padding:5px 10px;border-radius:20px;display:inline-block;margin:8px 0;color:#8A4D1A;font-weight:700}
+.recipe p{font-size:13px;color:#7A5A3F;line-height:1.4;margin-bottom:12px}
+.btn{background:linear-gradient(135deg,#FF8A2B,#FF5A1F);color:white;border:none;padding:9px 18px;border-radius:20px;font-weight:800;cursor:pointer}
+.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:rgba(60,20,0,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.modal.show{display:flex}
+.modal-box{background:#FFFBF0;border-radius:24px;padding:22px;max-width:500px;width:100%}
+.close{float:right;font-size:18px;cursor:pointer;background:#FFE4CC;border:none;width:36px;height:36px;border-radius:50%}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.left{position:static}.recipe{flex-direction:column}.recipe img{width:100%;height:200px}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="top"><h1>✨ ZAYKA</h1><button class="badge" onclick="showGharKaKhana()">Ghar Ka Khana</button></div>
+<div class="hero"><div><h2>What's cooking today?</h2><p id="sub">Fresh ingredients in your fridge</p></div><button class="badge" onclick="showAISuggest()">✨ Smart Suggestions</button></div>
+<div class="grid">
+<div class="left">
+<h3>🧊 Fridge Ingredients</h3>
+<div class="ing-grid">
+<div class="ing-card selected" data-id="tomato"><div>🍅</div><p>Tomato • 3 pcs</p></div>
+<div class="ing-card" data-id="milk"><div>🥛</div><p>Milk • 500ml</p></div>
+<div class="ing-card selected" data-id="onion"><div>🧅</div><p>Onion • 2 pcs</p></div>
+<div class="ing-card" data-id="paneer"><div>🧀</div><p>Paneer • 200g</p></div>
+<div class="ing-card" data-id="aloo"><div>🥔</div><p>Aloo • 4 pcs</p></div>
+<div class="ing-card" data-id="dahi"><div>🍶</div><p>Dahi • 1 bowl</p></div>
+</div>
+</div>
+<div class="right">
+<div class="recipe" data-needs="tomato,paneer,onion"><div style="flex:1"><h3>Paneer Butter Masala</h3><span class="meta">⭐ 4.8 • 25 min • Easy</span><p>Creamy tomato based, soft paneer, perfect with roti.</p><button class="btn">View Recipe →</button></div><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600"></div>
+<div class="recipe" data-needs="dahi"><div style="flex:1"><h3>Curd Rice Tadka</h3><span class="meta">⭐ 4.6 • 10 min • Quick</span><p>Dahi se 10 min me ready, light and cooling.</p><button class="btn">View Recipe →</button></div><img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600"></div>
+<div class="recipe" data-needs="aloo,tomato"><div style="flex:1"><h3>Aloo Gobi Masala</h3><span class="meta">⭐ 4.7 • 20 min • Home Style</span><p>Classic aloo gobhi sabzi made with everyday spices.</p><button class="btn">View Recipe →</button></div><img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600"></div>
+</div>
+</div>
+</div>
+
+<div id="recipeModal" class="modal" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="close" onclick="closeModal()">✕</button>
+    <h2 id="mTitle" style="color:#3C1A05;margin:4px 0 8px 0"></h2>
+    <span id="mMeta" class="meta"></span>
+    <img id="mImg" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin:12px 0">
+    <p id="mSteps" style="font-size:14px;color:#5A3A22;line-height:1.7;white-space:pre-line;background:white;padding:14px;border-radius:14px"></p>
+    <button class="btn" style="width:100%;margin-top:16px;padding:12px" onclick="closeModal()">Got it! 😋</button>
+  </div>
+</div>
+
+<script>
+const recipeData = {
+  "Paneer Butter Masala": { meta:"⭐ 4.8 • 25 min • Easy", steps:"1. Lightly fry paneer cubes\n2. Make smooth tomato-onion puree\n3. Heat butter, add spices and puree\n4. Cook for 10 mins, add cream and paneer\n5. Garnish with coriander - Serve hot!" },
+  "Curd Rice Tadka": { meta:"⭐ 4.6 • 10 min • Quick", steps:"1. Cook rice and let it cool\n2. Mix curd with little water\n3. Add mustard seeds, curry leaves tadka\n4. Mix everything with salt\n5. Refreshing and ready!" },
+  "Aloo Gobi Masala": { meta:"⭐ 4.7 • 20 min • Home Style", steps:"1. Chop aloo and gobhi\n2. Heat oil, add cumin and spices\n3. Add veggies, saute for 5 mins\n4. Add tomatoes, cover and cook\n5. Sprinkle garam masala - Done!" }
+};
+function filter(){
+  const sel=[...document.querySelectorAll('.ing-card.selected')].map(e=>e.dataset.id);
+  document.getElementById('sub').innerText=sel.length+' items selected • '+(sel.join(', ')||'All recipes');
+  document.querySelectorAll('.recipe').forEach(r=>{
+    const needs=r.dataset.needs.split(',');
+    r.classList.toggle('hidden',!(sel.length===0||needs.some(n=>sel.includes(n))));
+  });
+}
+function openRecipe(t,img){
+  document.getElementById('mTitle').innerText=t;
+  document.getElementById('mMeta').innerText=recipeData[t]?.meta||"❤️ Made for Every Indian Family";
+  document.getElementById('mImg').src=img;
+  document.getElementById('mSteps').innerText=recipeData[t]?.steps||"";
+  document.getElementById('recipeModal').classList.add('show');
+}
+function closeModal(){document.getElementById('recipeModal').classList.remove('show');}
+function showGharKaKhana(){
+  document.getElementById('mTitle').innerText="ZAYKA - Ghar Ka Khana";
+  document.getElementById('mMeta').innerText="❤️ Made for Every Indian Family";
+  document.getElementById('mImg').src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600";
+  document.getElementById('mSteps').innerText="ZAYKA ka matlab hai - Ghar ka swaad!\n\n• Cook with what you have in fridge\n• Simple recipes for family & beginners\n• Clean, responsive and easy to use\n• Designed for daily Indian cooking\n\nBuilt with care for home kitchens! 🏠";
+  document.getElementById('recipeModal').classList.add('show');
+}
+function showAISuggest(){
+  document.getElementById('mTitle').innerText="Smart Suggestions";
+  document.getElementById('mMeta').innerText="💡 Based on your ingredients";
+  document.getElementById('mImg').src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600";
+  document.getElementById('mSteps').innerText="Today's picks for you:\n\n• Tomato + Onion → Try Tamatar Pyaaz Sabzi (15 min)\n• Dahi available → Curd Rice is quick & cooling\n• Aloo in fridge → Aloo Gobi is a classic\n\nTip: Select more ingredients to see more recipes!";
+  document.getElementById('recipeModal').classList.add('show');
+}
+document.querySelectorAll('.ing-card').forEach(c=>c.addEventListener('click',()=>{c.classList.toggle('selected');filter()}));
+document.querySelectorAll('.recipe').forEach(r=>{
+  const b=r.querySelector('.btn'),t=r.querySelector('h3').innerText,i=r.querySelector('img').src;
+  b.addEventListener('click',()=>openRecipe(t,i));
+});
+filter();
+</script>
+</body>
+</html>
